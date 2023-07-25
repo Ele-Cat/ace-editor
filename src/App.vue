@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       locale: zhCN,
-      activeTab: "2",
+      activeTab: "1",
       content: "",
     };
   },

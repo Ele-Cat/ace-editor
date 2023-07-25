@@ -3,7 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   productionSourceMap: false,
   // 用来在gitee page中配置多项目，无视即可
-  // publicPath: "https://ele-cat.gitee.io/ace-editor",
+  publicPath: "https://ele-cat.gitee.io/ace-editor",
   devServer: {
     port: 9527,
     open: true,
