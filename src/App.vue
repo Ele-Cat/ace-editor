@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    1
-    <a-button type="primary">123</a-button>
+    <a-tabs default-active-key="1">
+      <a-tab-pane key="1" tab="基础功能">
+        <Normal />
+      </a-tab-pane>
+      <a-tab-pane key="2" tab="封装编辑器">
+        <Editor />
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Normal from '@/components/Normal'
+import Editor from '@/components/Editor'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Normal,
+    Editor,
   }
 }
 </script>
