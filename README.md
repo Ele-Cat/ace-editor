@@ -1,19 +1,19 @@
 # ace-editor
 
-## Project setup
+## 安装
+
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### 运行
+
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+### 打包
+
 ```
 yarn build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

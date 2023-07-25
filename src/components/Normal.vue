@@ -1,9 +1,6 @@
 <template>
   <div>
-    <editor v-model="content" @init="editorInit" lang="html" theme="chrome" width="100%" height="500"></editor>
-    <pre>
-      {{ content }}
-    </pre>
+    <editor v-model="content" @init="editorInit" lang="html" theme="chrome" width="100%" height="300"></editor>
   </div>
 </template>
 
