@@ -1,27 +1,44 @@
 <template>
-  <div id="app">
-    <a-tabs default-active-key="1">
-      <a-tab-pane key="1" tab="基础功能">
-        <Normal />
-      </a-tab-pane>
-      <a-tab-pane key="2" tab="封装编辑器">
-        <Editor />
-      </a-tab-pane>
-    </a-tabs>
-  </div>
+  <a-config-provider :locale="locale">
+    <div id="app">
+      <a-tabs :default-active-key="activeTab">
+        <a-tab-pane key="1" tab="基础功能">
+          <Normal />
+        </a-tab-pane>
+        <a-tab-pane key="2" tab="封装编辑器">
+          <Editor v-model="content" />
+          <a-button type="primary" style="margin:12px 0 0 12px" @click="getCode">获取代码</a-button>
+        </a-tab-pane>
+      </a-tabs>
+    </div>
+  </a-config-provider>
 </template>
 
 <script>
-import Normal from '@/components/Normal'
-import Editor from '@/components/Editor'
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
+import Normal from "@/components/Normal";
+import Editor from "@/components/Editor";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Normal,
     Editor,
-  }
-}
+  },
+  data() {
+    return {
+      locale: zhCN,
+      activeTab: "2",
+      content: "",
+    };
+  },
+  methods: {
+    // 获取代码
+    getCode() {
+      console.log(this.content);
+    },
+  },
+};
 </script>
 
 <style lang="less">
