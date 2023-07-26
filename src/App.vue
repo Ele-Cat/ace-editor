@@ -8,6 +8,7 @@
         <a-tab-pane key="2" tab="封装编辑器">
           <Editor v-model="content" />
           <a-button type="primary" style="margin:12px 0 0 12px" @click="getCode">获取代码</a-button>
+          <a-button type="primary" style="margin:12px 0 0 12px" @click="setCode">设置代码</a-button>
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -28,7 +29,7 @@ export default {
   data() {
     return {
       locale: zhCN,
-      activeTab: "1",
+      activeTab: "2",
       content: "",
     };
   },
@@ -36,7 +37,17 @@ export default {
     // 获取代码
     getCode() {
       console.log(this.content);
+      const textarea = document.createElement("textarea");
+      textarea.value = this.content;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      this.$message.success('复制成功')
     },
+    setCode() {
+      this.content = 'let a = 1;\nconsole.log(a);';
+    }
   },
 };
 </script>

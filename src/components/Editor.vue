@@ -7,6 +7,7 @@
         style="width: 120px"
         :default-value="aceConfig.selectTheme"
         @change="handleThemeChange"
+        title="修改主题"
       >
         <a-select-option v-for="theme in aceConfig.themes" :key="theme">
           {{ theme }}
@@ -18,6 +19,7 @@
         style="width: 120px; margin-left: 10px"
         :default-value="aceConfig.selectLang"
         @change="handleLangChange"
+        title="修改语言"
       >
         <a-select-option v-for="lang in aceConfig.langs" :key="lang">
           {{ lang }}
@@ -30,6 +32,8 @@
       <!--editor插件-->
       <!--其中的@input中的方法就是子组件值改变时调用的方法，该方法会给父组件传入改变值-->
       <editor
+        ref="editorRef"
+        id="editor"
         :value="content"
         @input="handleInput"
         @init="editorInit"
@@ -45,57 +49,54 @@
       v-model="visible"
       width="500px"
       title="编辑器设置"
-      @ok="handleOk"
+      :footer="null"
     >
-      <a-row type="flex">
-        <a-col flex="330px">
-          <span class="settingTitle">Tab 长度</span>
-          <br />
-          <span class="settingDescription"
-            >选择你想要的 Tab 长度，默认设置为2个空格</span
-          >
-        </a-col>
-        <a-col flex="80px">
+      <div class="config-box">
+        <div>
+          <p class="setting-title">Tab 长度</p>
+          <p class="setting-description">选择你想要的 Tab 长度，默认设置为2个空格</p>
+        </div>
+        <div>
           <a-select
             style="width: 120px"
             :default-value="aceConfig.options.tabSize"
             @change="handleTabChange"
-            disabled
           >
             <a-select-option v-for="tab in aceConfig.tabs" :key="tab">
               {{ tab }}个空格
             </a-select-option>
           </a-select>
-        </a-col>
-      </a-row>
-      <a-row type="flex" style="margin-top: 50px">
-        <a-col flex="330px">
-          <span class="settingTitle">字体设置</span>
-          <br />
-          <span class="settingDescription">调整适合你的字体大小</span>
-        </a-col>
-        <a-col flex="80px">
+        </div>
+      </div>
+      <div class="config-box">
+        <div>
+          <p class="setting-title">字体设置</p>
+          <p class="setting-description">调整适合你的字体大小</p>
+        </div>
+        <div>
           <a-select
             style="width: 120px"
             :default-value="aceConfig.options.fontSize"
             @change="handleFontChange"
-            disabled
           >
             <a-select-option v-for="font in aceConfig.fontSizes" :key="font">
               {{ font }}px
             </a-select-option>
           </a-select>
-        </a-col>
-      </a-row>
+        </div>
+      </div>
+      <div class="config-footer">
+        <a-button @click="handleOk">关闭</a-button>
+      </div>
     </a-modal>
   </div>
 </template>
 
 <script>
 // 编辑器主题
-const themes = ["xcode", "eclipse", "monokai", "cobalt"];
+const themes = ["github", "xcode", "eclipse", "cobalt", "monokai", "terminal"];
 // 编辑器语言
-const langs = ["c_cpp", "java", "javascript", "golang"];
+const langs = ["javascript", "java", "c_cpp", "golang"];
 // tabs
 const tabs = [2, 4, 8];
 // 字体大小
@@ -103,7 +104,7 @@ const fontSizes = [14, 15, 16, 17, 18, 19, 20, 21, 22];
 // 编辑器选项
 const options = {
   tabSize: 2, // tab默认大小
-  showPrintMargin: false, // 去除编辑器里的竖线
+  showPrintMargin: true, // 去除编辑器里的竖线
   fontSize: 14, // 字体大小
   highlightActiveLine: true, // 高亮配置
   enableBasicAutocompletion: true, //启用基本自动完成
@@ -125,7 +126,7 @@ export default {
         tabs, // tab空格
         fontSizes,
         options, // 编辑器属性设置
-        selectTheme: "xcode", // 默认选择的主题
+        selectTheme: "github", // 默认选择的主题
         selectLang: "javascript", // 默认选择的语言
         readOnly: false, // 是否只读
       },
@@ -151,33 +152,41 @@ export default {
     // '编辑器设置'模态窗口确认按钮回调
     handleOk() {
       this.visible = false;
-      // this.editorInit()
+      // this.requireBrace()
     },
     //分割线：以下为该代码组件的配置
     // 代码块主题切换
     handleThemeChange(value) {
       this.aceConfig.selectTheme = value;
-      this.editorInit();
+      this.requireBrace();
     },
     // 代码块语言切换
     handleLangChange(value) {
       this.aceConfig.selectLang = value;
-      this.editorInit();
+      this.requireBrace();
     },
     // tab切换
     handleTabChange(value) {
       this.aceConfig.options.tabSize = value;
-      this.editorInit();
+      this.editor.getSession().setTabSize(value);
+      this.requireBrace();
     },
     // 字体大小切换
     handleFontChange(value) {
-      this.aceConfig.options.tabSize = value;
-      this.editorInit();
+      this.aceConfig.options.fontSize = value;
+      document.getElementById('editor').style.fontSize = `${value}px`;
+      this.requireBrace();
     },
     // 代码块初始化
-    editorInit() {
+    editorInit(editor) {
+      this.editor = editor
+      this.requireBrace()
+    },
+    requireBrace() {
+      require(`brace/ext/searchbox`); // 搜索扩展
       require("brace/ext/language_tools"); // language extension prerequsite...
       require(`brace/mode/${this.aceConfig.selectLang}`); // 语言
+      require(`brace/snippets/${this.aceConfig.selectLang}`); // 代码校验
       require(`brace/theme/${this.aceConfig.selectTheme}`); // 主题
     },
   },
@@ -185,11 +194,26 @@ export default {
 </script>
 
 <style lang="less">
-.settingTitle {
-  font-size: larger;
+.config-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  p {
+    margin: 0;
+  }
+
+  .setting-title {
+    font-size: 18px;
+  }
+
+  .setting-description {
+    font-size: 14px;
+    color: #a8a8af;
+  }
 }
-.settingDescription {
-  font-size: small;
-  color: #a8a8af;
+.config-footer {
+  text-align: center;
 }
 </style>
