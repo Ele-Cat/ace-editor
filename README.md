@@ -1,5 +1,10 @@
 # ace-editor
 
+## 介绍
+
+[教程地址](https://ele-cat.gitee.io/tools/AceEditor.html)
+[预览地址](https://ele-cat.gitee.io/ace-editor)
+
 ## 安装
 
 ```
