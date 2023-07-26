@@ -11,6 +11,7 @@
           <a-button type="primary" style="margin:12px 0 0 12px" @click="setCode">设置代码</a-button>
         </a-tab-pane>
       </a-tabs>
+      <a href='https://gitee.com/ele-cat/ace-editor' target="_blank" class="widget"><img src='https://gitee.com/ele-cat/ace-editor/widgets/widget_1.svg' alt='Fork me on Gitee' /></a>
     </div>
   </a-config-provider>
 </template>
@@ -29,7 +30,7 @@ export default {
   data() {
     return {
       locale: zhCN,
-      activeTab: "2",
+      activeTab: "1",
       content: "",
     };
   },
@@ -57,5 +58,10 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.widget {
+  position: fixed;
+  top: 0;
+  right: 0;
 }
 </style>
