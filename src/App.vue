@@ -11,7 +11,7 @@
           <a-button type="primary" style="margin:12px 0 0 12px" @click="setCode">设置代码</a-button>
         </a-tab-pane>
       </a-tabs>
-      <a href='https://gitee.com/ele-cat/ace-editor' target="_blank" class="widget"><img src='https://gitee.com/ele-cat/ace-editor/widgets/widget_1.svg' alt='Fork me on Gitee' /></a>
+      <a href='https://gitee.com/ele-cat/ace-editor' target="_blank" class="widget"><img src='https://gitee.com/ele-cat/ace-editor/widgets/widget_6.svg' alt='Fork me on Gitee' /></a>
     </div>
   </a-config-provider>
 </template>
@@ -61,7 +61,7 @@ export default {
 }
 .widget {
   position: fixed;
-  top: 0;
-  right: 0;
+  bottom: 10px;
+  left: calc(50% - 75px);
 }
 </style>
